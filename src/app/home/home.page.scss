@@ -25,3 +25,9 @@
 #container a {
   text-decoration: none;
 }
+
+ion-header {
+  ion-button {
+    --color: white;
+  }
+}
