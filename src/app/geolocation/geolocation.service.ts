@@ -19,10 +19,10 @@ export class GeolocationService {
   async getCurrentLocation() {
     try {
       const coordinates = await Geolocation.getCurrentPosition();
-
-      const { latitude, longitude } = coordinates.coords;
+      return coordinates.coords;
     } catch (error) {
       alert(`Error getting current position ${error}`);
+      return;
     }
   }
 

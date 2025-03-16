@@ -1,0 +1,23 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button [routerLink]="'../'">
+        <ion-icon name="return-down-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-radio-group [(ngModel)]="tempChoice" (ionChange)="setPreference()">
+    <h4>Select Temperature Preference</h4><br /> 
+    <ion-radio labelPlacement="start">Celsius</ion-radio><br /><br />
+    <ion-radio labelPlacement="start">Fahrenheit</ion-radio><br /><br />
+  </ion-radio-group>  
+  <ion-radio-group [(ngModel)]="appTheme" (ionChange)="setPreference()">
+    <h4>Select App Theme</h4><br />
+    <ion-radio labelPlacement="start">Light</ion-radio><br /><br />
+    <ion-radio labelPlacement="start">Dark</ion-radio><br /><br />
+  </ion-radio-group>  
+</ion-content>

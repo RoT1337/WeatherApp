@@ -27,7 +27,11 @@
 }
 
 ion-header {
-  ion-button {
-    --color: white;
+  ion-toolbar {
+    --background: transparent;
+
+    ion-button {
+      --color: white;
+    }
   }
 }
