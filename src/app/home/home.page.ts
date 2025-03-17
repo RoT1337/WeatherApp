@@ -28,10 +28,15 @@ export class HomePage implements OnInit{
   realfeelTempImperial: number = 0;
   realFeelShadeTempMetric: number = 0;
   realFeelShadeTempImperial: number = 0;
-  uvIndexNum: number | null = 0;
+  uvIndexNum: number | null = 0; 
   uvIndexText: string = '';
   windDirection: string = '';
   windSpeed: number = 0; 
+
+  forecastHeadline: string = '';
+  forecastStart: string = '';
+  forecastEnd: string | null = '';
+  dailyForecasts: any[] = [];
 
   constructor(
     private geolocationService: GeolocationService,
@@ -59,6 +64,7 @@ export class HomePage implements OnInit{
         console.log(`Key for ${this.englishName}, ${this.adminName} : ${this.keyForLocation}`);
 
         this.getWeatherConditions();
+        this.getForecast5Days();
       }
     );
   }
@@ -85,6 +91,18 @@ export class HomePage implements OnInit{
           RealFeelShade®: ${this.realFeelShadeTempMetric} °C,
           UV Index: ${this.uvIndexNum} ${this.uvIndexText}, 
           Wind: ${this.windDirection} ${this.windSpeed}`);
+      }
+    );
+  }
+
+  getForecast5Days() {
+    this.http.get(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${this.keyForLocation}?apikey=${API_KEY}`).subscribe(
+      (data: any) => {
+        this.forecastHeadline = data.Headline.Text;
+        this.forecastStart = data.Headline.EffectiveDate;
+        this.forecastEnd = data.Headline.EndDate;
+        this.dailyForecasts = data.DailyForecasts;
+        console.log(this.dailyForecasts);
       }
     );
   }
