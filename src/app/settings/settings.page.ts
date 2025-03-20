@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Preferences } from '@capacitor/preferences';
+import { PreferencesService } from '../preferences/preferences.service';
 
 @Component({
   selector: 'app-settings',
@@ -9,33 +9,49 @@ import { Preferences } from '@capacitor/preferences';
 })
 export class SettingsPage implements OnInit {
   tempChoice: string = '';
-  appTheme: string = '';
+  paletteToggle: boolean = false;
 
-  constructor() {}
+  constructor(private preferenceService: PreferencesService) {}
 
   ngOnInit() {
     this.getPreference();
+
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+    this.initializeDarkPalette(prefersDark.matches);
+
+    prefersDark.addEventListener('change', (mediaQuery) => this.initializeDarkPalette(mediaQuery.matches));
   }
 
   async setPreference() {
-    console.log(`Temp Label: ${this.tempChoice}, App Theme: ${this.appTheme}`);
+    console.log(`Temp Label: ${this.tempChoice}, App Theme: ${this.paletteToggle}`);
 
-    await Preferences.set({
-      key: 'settings',
-      value: JSON.stringify({
-        tempChoice: this.tempChoice,
-        appTheme: this.appTheme,
-      })
+    await this.preferenceService.setPreferences('settings', {
+      tempChoice: this.tempChoice,
+      paletteToggle: this.paletteToggle,
     });
   }
 
   async getPreference() {
-    const result = await Preferences.get({ key: 'settings' });
+    const settings = await this.preferenceService.getPreferences('settings');
 
-    if (result.value) {
-      const settings = JSON.parse(result.value);
+    if (settings) {
       this.tempChoice = settings.tempChoice;
-      this.appTheme = settings.appTheme;
+      this.paletteToggle = settings.appTheme;
     }
+  }
+
+  initializeDarkPalette(isDark: boolean) {
+    this.paletteToggle = isDark;
+    this.toggleDarkPalette(isDark);
+  }
+
+  toggleChange(event: CustomEvent) {
+    this.toggleDarkPalette(event.detail.checked);
+    this.setPreference();
+  }
+
+  toggleDarkPalette(shouldAdd: boolean) {
+    document.documentElement.classList.toggle('ion-palette-dark', shouldAdd);
   }
 }
