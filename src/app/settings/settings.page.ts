@@ -17,14 +17,12 @@ export class SettingsPage implements OnInit {
     this.getPreference();
 
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-
     this.initializeDarkPalette(prefersDark.matches);
-
     prefersDark.addEventListener('change', (mediaQuery) => this.initializeDarkPalette(mediaQuery.matches));
   }
 
   async setPreference() {
-    console.log(`Temp Label: ${this.tempChoice}, App Theme: ${this.paletteToggle}`);
+    console.log(`Temp Label: ${this.tempChoice}, Dark Mode: ${this.paletteToggle}`);
 
     await this.preferenceService.setPreferences('settings', {
       tempChoice: this.tempChoice,
@@ -37,18 +35,25 @@ export class SettingsPage implements OnInit {
 
     if (settings) {
       this.tempChoice = settings.tempChoice;
-      this.paletteToggle = settings.appTheme;
+      this.paletteToggle = settings.paletteToggle;
+      this.toggleDarkPalette(this.paletteToggle);
+    } else {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      this.paletteToggle = prefersDark;
+      this.toggleDarkPalette(prefersDark);
     }
+
+    console.log(`Temp Label: ${this.tempChoice}, Dark Mode: ${this.paletteToggle}`);
+  }
+  
+  toggleChange(event: CustomEvent) {
+    this.toggleDarkPalette(event.detail.checked);
+    this.setPreference();
   }
 
   initializeDarkPalette(isDark: boolean) {
     this.paletteToggle = isDark;
     this.toggleDarkPalette(isDark);
-  }
-
-  toggleChange(event: CustomEvent) {
-    this.toggleDarkPalette(event.detail.checked);
-    this.setPreference();
   }
 
   toggleDarkPalette(shouldAdd: boolean) {

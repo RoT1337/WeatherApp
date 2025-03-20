@@ -29,9 +29,17 @@
 ion-header {
   ion-toolbar {
     --background: transparent;
-
-    ion-button {
-      --color: white;
-    }
   }
+}
+
+.area-button {
+  --color: var(--area-button-color-light);
+}
+
+.ion-palette-dark ion-header ion-toolbar ion-button {
+  --color: var(--button-color-dark);
+}
+
+.ion-palette-dark .area-button {
+  --color: var(--area-button-color-dark);
 }
