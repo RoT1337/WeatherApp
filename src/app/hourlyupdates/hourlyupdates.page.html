@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button [routerLink]="'../'">
+        <ion-icon name="return-down-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Hourly Updates</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title class="ion-text-center">Hourly Updates</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let forecast of hourlyWeatherData">
+          <ion-label>
+            <h3>{{ forecast.EpochDateTime }}</h3>
+            <p>Temperature: {{ forecast.Temperature.Value }} °C</p>
+            <!-- <p>RealFeel®: {{ forecast.RealFeelTemperature.Value }} °C</p> -->
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

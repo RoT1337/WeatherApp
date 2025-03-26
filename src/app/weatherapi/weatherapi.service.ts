@@ -1,0 +1,99 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { GeolocationService } from '../geolocation/geolocation.service';
+
+const API_KEY: string = 'gGHWaROxc1GObxSwZAbApoyXKAy5GK4d';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class WeatherapiService {
+  private weatherData: any = {};
+  private hourlyWeatherData: any[] = [];
+
+  constructor(
+    private http: HttpClient,
+    private geolocationService: GeolocationService
+  ) {}
+
+  async getCurrentLocation() {
+    const currentCoordinates = await this.geolocationService.getCurrentLocation();
+    if (!currentCoordinates) {
+      console.error('Failed to get current location');
+      return;
+    }
+    const latitude = currentCoordinates.latitude;
+    const longitude = currentCoordinates.longitude;
+
+    console.log(`Latitude: ${latitude} & Longitude: ${longitude}`);
+
+    this.http.get(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${API_KEY}&q=${latitude}%2C${longitude}`).subscribe(
+      (data: any) => {
+        this.weatherData.englishName = data.EnglishName;
+        this.weatherData.adminName = data.AdministrativeArea.EnglishName;
+        this.weatherData.keyForLocation = data.Key;
+
+        console.log(`Key for ${this.weatherData.englishName}, ${this.weatherData.adminName} : ${this.weatherData.keyForLocation}`);
+
+        this.getWeatherConditions();
+        this.getForecast5Days();
+        this.getHourlyUpdates();
+      }
+    );
+  }
+
+  private getWeatherConditions() {
+    this.http.get(`http://dataservice.accuweather.com/currentconditions/v1/${this.weatherData.keyForLocation}?apikey=${API_KEY}&details=true`).subscribe(
+      (data: any) => {
+        this.weatherData.weatherType = data[0].WeatherText;
+        this.weatherData.temperatureMetric = data[0].Temperature.Metric.Value;
+        this.weatherData.temperatureImperial = data[0].Temperature.Imperial.Value;
+        this.weatherData.humidity = data[0].RelativeHumidity;
+        this.weatherData.realfeelTempMetric = data[0].RealFeelTemperature.Metric.Value;
+        this.weatherData.realfeelTempImperial = data[0].RealFeelTemperature.Imperial.Value;
+        this.weatherData.realFeelShadeTempMetric = data[0].RealFeelTemperatureShade.Metric.Value;
+        this.weatherData.realFeelShadeTempImperial = data[0].RealFeelTemperatureShade.Imperial.Value;
+        this.weatherData.uvIndexNum = data[0].UVIndex;
+        this.weatherData.uvIndexText = data[0].UVIndexText;
+        this.weatherData.windDirection = data[0].Wind.Direction.English;
+        this.weatherData.windSpeed = data[0].Wind.Speed.Metric.Value;
+
+        console.log(`Weather: ${this.weatherData.weatherType}, 
+          Temperature: ${this.weatherData.temperatureMetric} °C, 
+          RealFeel®: ${this.weatherData.realfeelTempMetric} °C, 
+          RealFeelShade®: ${this.weatherData.realFeelShadeTempMetric} °C,
+          UV Index: ${this.weatherData.uvIndexNum} ${this.weatherData.uvIndexText}, 
+          Wind: ${this.weatherData.windDirection} ${this.weatherData.windSpeed}`);
+      }
+    );
+  }
+
+  private getForecast5Days() {
+    this.http.get(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${this.weatherData.keyForLocation}?apikey=${API_KEY}&metric=true`).subscribe(
+      (data: any) => {
+        this.weatherData.forecastHeadline = data.Headline.Text;
+        this.weatherData.forecastStart = data.Headline.EffectiveDate;
+        this.weatherData.forecastEnd = data.Headline.EndDate;
+        this.weatherData.dailyForecasts = data.DailyForecasts;
+        console.log(this.weatherData.dailyForecasts);
+      }
+    );
+  }
+
+  private getHourlyUpdates() {
+    this.http.get(`http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/${this.weatherData.keyForLocation}?apikey=${API_KEY}&metric=true`).subscribe(
+      (data: any) => {
+        this.hourlyWeatherData = data;
+        console.log(this.weatherData.hourForecast);
+      }
+    );
+  }
+
+  getWeatherData() {
+    return this.weatherData;
+  }
+
+  getHourlyWeatherData() {
+    return this.hourlyWeatherData;
+  }
+}

@@ -26,12 +26,12 @@
   text-decoration: none;
 }
 
+.first-toolbar {
+  box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 1);
+}
+
 ion-header {
   ion-toolbar {
     --background: transparent;
-
-    ion-button {
-      --color: white;
-    }
   }
 }

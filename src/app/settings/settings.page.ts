@@ -13,12 +13,11 @@ export class SettingsPage implements OnInit {
 
   constructor(private preferenceService: PreferencesService) {}
 
-  ngOnInit() {
-    this.getPreference();
+  async ngOnInit() {
+    await this.getPreference();
 
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-
-    this.initializeDarkPalette(prefersDark.matches);
+    this.initializeDarkPalette(this.paletteToggle);
 
     prefersDark.addEventListener('change', (mediaQuery) => this.initializeDarkPalette(mediaQuery.matches));
   }
@@ -37,7 +36,7 @@ export class SettingsPage implements OnInit {
 
     if (settings) {
       this.tempChoice = settings.tempChoice;
-      this.paletteToggle = settings.appTheme;
+      this.paletteToggle = settings.paletteToggle; // Ensure this matches the stored preference
     }
   }
 
@@ -47,7 +46,8 @@ export class SettingsPage implements OnInit {
   }
 
   toggleChange(event: CustomEvent) {
-    this.toggleDarkPalette(event.detail.checked);
+    this.paletteToggle = event.detail.checked; // Update the component's state
+    this.toggleDarkPalette(this.paletteToggle);
     this.setPreference();
   }
 

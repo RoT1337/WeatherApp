@@ -5,6 +5,8 @@ import { Preferences } from '@capacitor/preferences';
   providedIn: 'root'
 })
 export class PreferencesService {
+  tempChoice: string = '';
+  paletteToggle: boolean = false;
 
   constructor() { }
 
