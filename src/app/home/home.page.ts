@@ -96,7 +96,7 @@ export class HomePage implements OnInit{
   }
 
   getForecast5Days() {
-    this.http.get(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${this.keyForLocation}?apikey=${API_KEY}`).subscribe(
+    this.http.get(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${this.keyForLocation}?apikey=${API_KEY}&metric=true`).subscribe(
       (data: any) => {
         this.forecastHeadline = data.Headline.Text;
         this.forecastStart = data.Headline.EffectiveDate;

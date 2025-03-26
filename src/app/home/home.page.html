@@ -43,15 +43,15 @@
         <p>Forecast Headline End: <time [attr.dateTime]="forecastEnd">{{ forecastStart | date: 'yyyy-MM-dd HH:mm Z' }}</time></p> 
       </ion-card-subtitle>
     </ion-card-header>
-    <!-- <ion-card-content>  
+    <ion-card-content>  
       <ion-list>
-        <ion-item *ngFor="let forecast of dailyForecasts; let i = index">
+        <ion-item *ngFor="let forecast of dailyForecasts">
           <ion-label>
-            <h3>{{ forecast.DailyForecasts[{{ i }}].Date | date: 'yyyy-MM-dd HH:mm Z' }}</h3>
-            <p>Temperature: {{ forecast.DailyForecasts[{{ i }}].Temperature.Maximum.Value }} °C</p>
+            <h3>{{ forecast.Date | date: 'yyyy-MM-dd HH:mm Z' }}</h3>
+            <p>Temperature: {{ forecast.Temperature.Maximum.Value }} °C</p>
           </ion-label>
         </ion-item>
       </ion-list>
-    </ion-card-content> -->
+    </ion-card-content>
   </ion-card>
 </ion-content>
