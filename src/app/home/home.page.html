@@ -1,10 +1,16 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar>
-    <ion-button fill="clear" (click)="getCurrentLocation()" class="area-button ion-text-center">{{ englishName }}, {{ adminName }}</ion-button>
+<ion-header>
+  <ion-toolbar class="first-toolbar">
+    <ion-button fill="clear" (click)="getCurrentLocation()" class="ion-text-center">{{ weatherData.englishName }}, {{ weatherData.adminName }}</ion-button>
     <ion-buttons slot="end">
       <ion-button [routerLink]="'/settings'">
         <ion-icon name="settings-outline"></ion-icon>
       </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-button [routerLink]="'/dailyforecasts'">Daily Forecasts</ion-button>
+      <ion-button [routerLink]="'/hourlyupdates'">Hourly Forecast</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -16,42 +22,12 @@
       <ion-card-subtitle class="ion-text-center">*Click for More Details*</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      <p class="ion-text-start">Weather: {{ weatherType }}</p> 
-      <p class="ion-text-start">Temperature: {{ temperatureMetric }} °C</p> 
-      <p class="ion-text-start">RealFeel®: {{ realfeelTempMetric }} °C</p> 
-      <p class="ion-text-end">RealFeelShade®: {{ realFeelShadeTempMetric }} °C</p>
-      <p class="ion-text-end">UV Index: {{ uvIndexNum }} {{ uvIndexText }}</p> 
-      <p class="ion-text-end">Wind: {{ windDirection }} {{ windSpeed }}</p>
+      <p class="ion-text-start">Weather: {{ weatherData.weatherType }}</p> 
+      <p class="ion-text-start">Temperature: {{ weatherData.temperatureMetric }} °C</p> 
+      <p class="ion-text-start">RealFeel®: {{ weatherData.realfeelTempMetric }} °C</p> 
+      <p class="ion-text-end">RealFeelShade®: {{ weatherData.realFeelShadeTempMetric }} °C</p>
+      <p class="ion-text-end">UV Index: {{ weatherData.uvIndexNum }} {{ weatherData.uvIndexText }}</p> 
+      <p class="ion-text-end">Wind: {{ weatherData.windDirection }} {{ weatherData.windSpeed }}</p>
     </ion-card-content>
-  </ion-card>
-
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title class="ion-text-center">Hourly Updates</ion-card-title>
-      <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content>
-      Here's a small text description for the card content. Nothing more, nothing less.
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title class="ion-text-center">{{ forecastHeadline }}</ion-card-title>
-      <ion-card-subtitle>
-        <p>Forecast Headline Start: <time [attr.dateTime]="forecastStart">{{ forecastStart | date: 'yyyy-MM-dd HH:mm Z' }}</time></p> 
-        <p>Forecast Headline End: <time [attr.dateTime]="forecastEnd">{{ forecastStart | date: 'yyyy-MM-dd HH:mm Z' }}</time></p> 
-      </ion-card-subtitle>
-    </ion-card-header>
-    <!-- <ion-card-content>  
-      <ion-list>
-        <ion-item *ngFor="let forecast of dailyForecasts; let i = index">
-          <ion-label>
-            <h3>{{ forecast.DailyForecasts[{{ i }}].Date | date: 'yyyy-MM-dd HH:mm Z' }}</h3>
-            <p>Temperature: {{ forecast.DailyForecasts[{{ i }}].Temperature.Maximum.Value }} °C</p>
-          </ion-label>
-        </ion-item>
-      </ion-list>
-    </ion-card-content> -->
   </ion-card>
 </ion-content>

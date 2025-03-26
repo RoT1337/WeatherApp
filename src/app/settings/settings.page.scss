@@ -1,9 +1,5 @@
 ion-header {
-  ion-toolbar {
-    --background: transparent;
-  }
-}
-
-.ion-palette-dark ion-header ion-toolbar ion-button {
-  --color: var(--button-color-dark);
+    ion-toolbar {
+      --background: transparent;
+    }
 }

@@ -13,11 +13,12 @@ export class SettingsPage implements OnInit {
 
   constructor(private preferenceService: PreferencesService) {}
 
-  ngOnInit() {
-    this.getPreference();
+  async ngOnInit() {
+    await this.getPreference();
 
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    this.initializeDarkPalette(prefersDark.matches);
+    this.initializeDarkPalette(this.paletteToggle);
+
     prefersDark.addEventListener('change', (mediaQuery) => this.initializeDarkPalette(mediaQuery.matches));
   }
 
@@ -35,25 +36,21 @@ export class SettingsPage implements OnInit {
 
     if (settings) {
       this.tempChoice = settings.tempChoice;
-      this.paletteToggle = settings.paletteToggle;
-      this.toggleDarkPalette(this.paletteToggle);
-    } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      this.paletteToggle = prefersDark;
-      this.toggleDarkPalette(prefersDark);
+      this.paletteToggle = settings.paletteToggle; // Ensure this matches the stored preference
     }
 
     console.log(`Temp Label: ${this.tempChoice}, Dark Mode: ${this.paletteToggle}`);
-  }
-  
-  toggleChange(event: CustomEvent) {
-    this.toggleDarkPalette(event.detail.checked);
-    this.setPreference();
   }
 
   initializeDarkPalette(isDark: boolean) {
     this.paletteToggle = isDark;
     this.toggleDarkPalette(isDark);
+  }
+
+  toggleChange(event: CustomEvent) {
+    this.paletteToggle = event.detail.checked; // Update the component's state
+    this.toggleDarkPalette(this.paletteToggle);
+    this.setPreference();
   }
 
   toggleDarkPalette(shouldAdd: boolean) {

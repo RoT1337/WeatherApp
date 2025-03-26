@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { PreferencesService } from './preferences/preferences.service';
 
 @Component({
   selector: 'app-root',
@@ -6,6 +7,26 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
   standalone: false,
 })
-export class AppComponent {
-  constructor() {}
+export class AppComponent implements OnInit {
+  constructor(private preferencesService: PreferencesService) {}
+
+  async ngOnInit() {
+    await this.initializeAppPreferences();
+  }
+
+  async initializeAppPreferences() {
+    const settings = await this.preferencesService.getPreferences('settings');
+    if (settings) {
+      this.applyPreferences(settings);
+    }
+  }
+
+  applyPreferences(settings: any) {
+    if (settings.paletteToggle) {
+      document.documentElement.classList.add('ion-palette-dark');
+    } else {
+      document.documentElement.classList.remove('ion-palette-dark');
+    }
+    // Apply other preferences as needed
+  }
 }
