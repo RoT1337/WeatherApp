@@ -7,27 +7,35 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-toolbar>
-    <ion-buttons>
-      <ion-button [routerLink]="'/dailyforecasts'">Daily Forecasts</ion-button>
-      <ion-button [routerLink]="'/hourlyupdates'">Hourly Forecast</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title class="ion-text-center">Current Weather Conditions</ion-card-title>
-      <ion-card-subtitle class="ion-text-center">*Click for More Details*</ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content>
-      <p class="ion-text-start">Weather: {{ weatherData.weatherType }}</p> 
-      <p class="ion-text-start">Temperature: {{ weatherData.temperatureMetric }} °C</p> 
-      <p class="ion-text-start">RealFeel®: {{ weatherData.realfeelTempMetric }} °C</p> 
-      <p class="ion-text-end">RealFeelShade®: {{ weatherData.realFeelShadeTempMetric }} °C</p>
-      <p class="ion-text-end">UV Index: {{ weatherData.uvIndexNum }} {{ weatherData.uvIndexText }}</p> 
-      <p class="ion-text-end">Wind: {{ weatherData.windDirection }} {{ weatherData.windSpeed }}</p>
-    </ion-card-content>
-  </ion-card>
+  <div *ngIf="weatherData.weatherType">
+    <h1>It's {{ weatherData.weatherType }} and feeling {{ weatherData.realfeelPhraseMetric }}</h1>
+    <ion-grid>
+      <ion-row>
+        <ion-col class="ion-text-start">
+          Weather: {{ weatherData.weatherType }} <br /><br />
+          Temperature: {{ weatherData.temperatureMetric }} °C <br /><br />
+          RealFeel®: {{ weatherData.realfeelTempMetric }} °C <br />
+        </ion-col>
+        <ion-col class="ion-text-end">
+          RealFeelShade®: {{ weatherData.realFeelShadeTempMetric }} °C <br /><br />
+          UV Index: {{ weatherData.uvIndexNum }} {{ weatherData.uvIndexText }} <br /><br />
+          Wind: {{ weatherData.windDirection }} {{ weatherData.windSpeed }} <br />
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button class="ion-text-start" [routerLink]="'/dailyforecasts'">Daily Forecasts</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button class="ion-text-end" [routerLink]="'/hourlyupdates'">Hourly Forecast</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
