@@ -26,24 +26,36 @@
   text-decoration: none;
 }
 
-.first-toolbar {
-  box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 1);
-}
-
-ion-header {
-  ion-toolbar {
+ion-content {
+  .first-toolbar {
     --background: transparent;
   }
-}
-
-.area-button {
-  --color: var(--area-button-color-light);
 }
 
 .ion-palette-dark ion-header ion-toolbar ion-button {
   --color: var(--button-color-dark);
 }
 
-.ion-palette-dark .area-button {
+.custom-button {
+  --color: var(--area-button-color-light);
+}
+
+.ion-palette-dark .custom-button {
   --color: var(--area-button-color-dark);
+}
+
+.background-image {
+  --background: url("../../assets/daytime/city-day.jpg") 0 0/cover no-repeat;
+  // filter: blur(10px);
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10; /* Ensure it stays above other content */
+  ion-toolbar {
+    --background: transparent;
+  }
 }

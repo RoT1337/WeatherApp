@@ -45,14 +45,14 @@ export class WeatherapiService {
   private getWeatherConditions() {
     this.http.get(`http://dataservice.accuweather.com/currentconditions/v1/${this.weatherData.keyForLocation}?apikey=${API_KEY}&details=true`).subscribe(
       (data: any) => {
-        this.weatherData.weatherType = data[0].WeatherText;
+        this.weatherData.weatherType = data[0].WeatherText.toLowerCase();
         this.weatherData.temperatureMetric = data[0].Temperature.Metric.Value;
         this.weatherData.temperatureImperial = data[0].Temperature.Imperial.Value;
         this.weatherData.humidity = data[0].RelativeHumidity;
         this.weatherData.realfeelTempMetric = data[0].RealFeelTemperature.Metric.Value;
-        this.weatherData.realfeelPhraseMetric = data[0].RealFeelTemperature.Metric.Phrase;
+        this.weatherData.realfeelPhraseMetric = data[0].RealFeelTemperature.Metric.Phrase.toLowerCase();
         this.weatherData.realfeelTempImperial = data[0].RealFeelTemperature.Imperial.Value;
-        this.weatherData.realfeelPhraseImperial = data[0].RealFeelTemperature.Imperial.Phrase;
+        this.weatherData.realfeelPhraseImperial = data[0].RealFeelTemperature.Imperial.Phrase.toLowerCase();
         this.weatherData.realFeelShadeTempMetric = data[0].RealFeelTemperatureShade.Metric.Value;
         this.weatherData.realFeelShadeTempImperial = data[0].RealFeelTemperatureShade.Imperial.Value;
         this.weatherData.uvIndexNum = data[0].UVIndex;

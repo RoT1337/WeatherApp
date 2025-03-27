@@ -1,17 +1,17 @@
-<ion-header>
+<ion-content class="ion-padding background-image">
   <ion-toolbar class="first-toolbar">
-    <ion-button fill="clear" (click)="getCurrentLocation()" class="ion-text-center">{{ weatherData.englishName }}, {{ weatherData.adminName }}</ion-button>
+    <ion-button fill="clear" (click)="getCurrentLocation()" class="ion-text-center custom-button">
+      <ion-icon name="pin-outline"></ion-icon>
+      {{ weatherData.englishName }}, {{ weatherData.adminName }}
+    </ion-button>
     <ion-buttons slot="end">
       <ion-button [routerLink]="'/settings'">
         <ion-icon name="settings-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-</ion-header>
-
-<ion-content class="ion-padding">
   <div *ngIf="weatherData.weatherType">
-    <h1>It's {{ weatherData.weatherType }} and feeling {{ weatherData.realfeelPhraseMetric }}</h1>
+    <h1 class="ion-text-center">It's {{ weatherData.weatherType }} and feeling {{ weatherData.realfeelPhraseMetric }}</h1>
     <ion-grid>
       <ion-row>
         <ion-col class="ion-text-start">
@@ -27,15 +27,15 @@
       </ion-row>
     </ion-grid>
   </div>
-</ion-content>
 
-<ion-footer>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button class="ion-text-start" [routerLink]="'/dailyforecasts'">Daily Forecasts</ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button class="ion-text-end" [routerLink]="'/hourlyupdates'">Hourly Forecast</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-footer>
+  <div class="footer">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button class="ion-text-start" [routerLink]="'/dailyforecasts'">Daily Forecasts</ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button class="ion-text-end" [routerLink]="'/hourlyupdates'">Hourly Forecast</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+</ion-content>
