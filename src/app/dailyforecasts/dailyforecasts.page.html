@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-content class="ion-padding">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button [routerLink]="'../'">
@@ -7,9 +7,6 @@
     </ion-buttons>
     <ion-title>Daily Forecast</ion-title>
   </ion-toolbar>
-</ion-header>
-
-<ion-content class="ion-padding">
   <ion-card>
     <ion-card-header>
       <ion-card-title class="ion-text-center">{{ weatherData.forecastHeadline }}</ion-card-title>

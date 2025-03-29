@@ -18,4 +18,9 @@ export class HourlyupdatesPage implements OnInit {
     return this.weatherapiService.getHourlyWeatherData();
   }
 
+  convertEpochToDate(epoch: number): string {
+    const date = new Date(epoch * 1000);
+    return date.toLocaleString();
+  }
+
 }

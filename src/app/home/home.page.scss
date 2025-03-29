@@ -29,6 +29,10 @@
 ion-content {
   .first-toolbar {
     --background: transparent;
+
+    ion-col {
+      --font-size: 5px;
+    }
   }
 }
 
@@ -45,17 +49,42 @@ ion-content {
 }
 
 .background-image {
-  --background: url("../../assets/daytime/city-day.jpg") 0 0/cover no-repeat;
+  --background: url("../../assets/daytime/city-day-blur.png") 0 0/cover no-repeat;
   // filter: blur(10px);
 }
 
 .footer {
-  position: absolute;
+  position: fixed; /* Use fixed positioning to stick to the screen */
   bottom: 0;
   left: 0;
-  width: 100%;
-  z-index: 10; /* Ensure it stays above other content */
+  width: 100%; /* Ensure the footer spans the full width of the screen */
+  z-index: 10;
+
   ion-toolbar {
     --background: transparent;
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Push buttons to the left and right edges */
+    align-items: center; /* Vertically center the buttons */
+    padding: 0; /* Remove any extra padding */
+
+    ion-buttons {
+      flex: 1; /* Ensure buttons take up equal space */
+    }
+
+    ion-button {
+      --background: #90CAF9;
+      width: 100%; /* Make the buttons fill their respective containers */
+      padding: 10px 0; /* Add padding for better appearance */
+
+      font-size: medium;
+
+      &.left-footer-button {
+        --border-radius: 0px 10px 0px 10px; /* Top-right corner rounded */
+      }
+
+      &.right-footer-button {
+        --border-radius: 10px 0px 10px 0px; /* Top-left corner rounded */
+      }
+    }
   }
 }
