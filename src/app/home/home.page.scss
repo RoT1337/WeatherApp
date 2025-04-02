@@ -27,8 +27,11 @@
 }
 
 ion-content {
+  --padding-top: 56px;
+
   .first-toolbar {
     --background: transparent;
+    position: fixed;
 
     ion-col {
       --font-size: 5px;
@@ -36,16 +39,25 @@ ion-content {
   }
 }
 
+.fixed-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  background-color: var(--ion-toolbar-background);
+  color: var(--ion-color-light);
+  box-shadow: 5px 15px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 15px 15px;
+}
+
 .ion-palette-dark ion-header ion-toolbar ion-button {
   --color: var(--button-color-dark);
 }
 
 .custom-button {
-  --color: var(--area-button-color-light);
-}
-
-.ion-palette-dark .custom-button {
-  --color: var(--area-button-color-dark);
+  --background: transparent !important;/* Default to light mode background */
+  --color: rgb(89, 89, 89) !important;
 }
 
 .background-image {
@@ -87,4 +99,21 @@ ion-content {
       }
     }
   }
+}
+
+.search-backdrop {
+  --background: rgba(0, 0, 0, 0.5); 
+  backdrop-filter: blur(8px);
+  z-index: 100; 
+  transition: backdrop-filter 0.3s ease, opacity 0.3s ease;
+}
+
+.search-overlay {
+  position: fixed;
+  top: 20%;
+  left: 10%;
+  width: 80%;
+  z-index: 101; 
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }

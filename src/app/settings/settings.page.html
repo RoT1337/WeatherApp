@@ -10,11 +10,12 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  <h4>Select Temperature Preference</h4><br /> 
   <ion-radio-group [(ngModel)]="tempChoice" (ionChange)="setPreference()">
-    <h4>Select Temperature Preference</h4><br /> 
     <ion-radio labelPlacement="start" value="Celcius">Celsius</ion-radio><br /><br />
     <ion-radio labelPlacement="start" value="Fahrenheit">Fahrenheit</ion-radio><br /><br />
   </ion-radio-group>  
+  <h4>Toggle App Theme</h4><br /> 
   <ion-toggle [(ngModel)]="paletteToggle" (ionChange)="toggleChange($event)" labelPlacement="start">
     Dark Mode
   </ion-toggle>

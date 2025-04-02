@@ -1,41 +1,125 @@
 <ion-content class="ion-padding background-image">
-  <ion-toolbar class="first-toolbar">
-    <ion-button fill="clear" (click)="getCurrentLocation()" class="ion-text-center custom-button">
+  <ion-toolbar class="first-toolbar fixed-toolbar">
+    <ion-button fill="clear" (click)="toggleSearchOverlay()" class="ion-text-center custom-button">
       <ion-icon name="pin-outline"></ion-icon>
       {{ weatherData.englishName }}, {{ weatherData.adminName }}
     </ion-button>
     <ion-buttons slot="end">
-      <ion-button [routerLink]="'/settings'">
+      <ion-button [routerLink]="'/settings'" class="custom-button">
         <ion-icon name="settings-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <div *ngIf="weatherData.weatherType">
-    <h1 class="ion-text-center">It's {{ weatherData.weatherType }} and feeling {{ weatherData.realfeelPhraseMetric }}</h1>
-    <ion-grid>
-      <ion-row>
-        <ion-col class="ion-text-start">
-          Weather: {{ weatherData.weatherType }} <br /><br />
-          Temperature: {{ weatherData.temperatureMetric }} °C <br /><br />
-          RealFeel®: {{ weatherData.realfeelTempMetric }} °C <br />
-        </ion-col>
-        <ion-col class="ion-text-end">
-          RealFeelShade®: {{ weatherData.realFeelShadeTempMetric }} °C <br /><br />
-          UV Index: {{ weatherData.uvIndexNum }} {{ weatherData.uvIndexText }} <br /><br />
-          Wind: {{ weatherData.windDirection }} {{ weatherData.windSpeed }} <br />
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+
+  <ion-backdrop *ngIf="isSearchOverlayVisible" (click)="toggleSearchOverlay()" class="search-backdrop"></ion-backdrop>
+  <div *ngIf="isSearchOverlayVisible" class="search-overlay" (click)="$event.stopPropagation()">
+    <ion-card>
+      <ion-card-header>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-card-title>Enter a Location</ion-card-title>
+            </ion-col>
+            <ion-col></ion-col>
+            <ion-col>
+              <ion-button fill="clear" (click)="toggleSearchOverlay()" class="ion-text-end toggle-search-button">
+                <ion-icon name="exit-outline"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="onSearchChange($event)"></ion-searchbar>
+        <ion-list>
+          <ion-item>
+            <ion-button fill="clear" (click)="getCurrentLocation()">
+              <ion-icon name="navigate-circle-outline" slot="start"></ion-icon>
+              Get Your Current Location
+            </ion-button>
+          </ion-item>
+          <ion-item *ngFor="let place of locationsArray">
+            <ion-button fill="clear" (click)="selectLocation(place.Key)">
+              {{ place.LocalizedName }}, {{ place.AdministrativeArea.LocalizedName }}
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  
+  <div class="body" *ngIf="weatherData.weatherType">
+    <ion-card>
+      <ion-card-title>
+        <h1 class="ion-text-center">It's {{ weatherData.weatherType }} while feeling {{ weatherData.realfeelPhraseMetric }}</h1>
+      </ion-card-title>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col class="ion-text-start">
+              <p *ngIf="tempChoice === 'Celcius'">
+                Temperature: {{ weatherData.temperatureMetric }} °C <br /><br />
+                RealFeel®: {{ weatherData.realfeelTempMetric }} °C <br />
+              </p>
+              <p *ngIf="tempChoice === 'Fahrenheit'">
+                Temperature: {{ weatherData.temperatureImperial }} °F <br /><br />
+                RealFeel®: {{ weatherData.realfeelTempImperial }} °F <br />
+              </p>
+            </ion-col>
+            <ion-col class="ion-text-end">
+              <p *ngIf="tempChoice === 'Celcius'">
+                RealFeelShade®: {{ weatherData.realFeelShadeTempMetric }} °C <br /><br />
+              </p>
+              <p *ngIf="tempChoice === 'Fahrenheit'">
+                RealFeelShade®: {{ weatherData.realFeelShadeTempImperial }} °F <br /><br />
+              </p>
+              UV Index: {{ weatherData.uvIndexNum }} {{ weatherData.uvIndexText }} <br /><br />
+              Wind: {{ weatherData.windDirection }} {{ weatherData.windSpeed }} <br />
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="hourly-updates">
+      <ion-card-title><h1 class="ion-text-center">12 Hours Updates</h1></ion-card-title>
+      <ion-card-content>
+        <swiper-container>
+          <swiper-slide *ngFor="let hour of hourlyWeatherData">
+            <ion-grid>
+              <ion-row>
+                <ion-col><ion-icon name="arrow-back-outline"></ion-icon></ion-col>
+                <ion-col><h4>{{ convertEpochToHour(hour.EpochDateTime) }}</h4></ion-col>
+                <ion-col><p>Temperature: {{ hour.Temperature.Value }} °C</p></ion-col>
+                <ion-col class="ion-text-end"><ion-icon name="arrow-forward-outline"></ion-icon></ion-col>
+              </ion-row>
+            </ion-grid>
+          </swiper-slide>
+        </swiper-container>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="daily-forecast">
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">{{ weatherData.forecastHeadline }}</ion-card-title>
+        <ion-card-subtitle>
+          <p>Forecast Headline Start: <time [attr.dateTime]="weatherData.forecastStart">{{ convertEpochToOnlyDate(weatherData.forecastStart) }}</time></p> 
+          <p>Forecast Headline End: <time [attr.dateTime]="weatherData.forecastEnd">{{ convertEpochToOnlyDate(weatherData.forecastStart) }}</time></p> 
+        </ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>  
+        <ion-list>
+          <ion-item *ngFor="let day of weatherData.dailyForecasts">
+            <ion-label>
+              <h3>{{ convertEpochToOnlyDate(day.EpochDate) }}</h3>
+              <p>Temperature: {{ day.Temperature.Maximum.Value }} °C</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
   </div>
 
   <div class="footer">
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-button class="left-footer-button" [routerLink]="'/dailyforecasts'">Daily Forecasts</ion-button>
-      </ion-buttons>
-      <ion-buttons slot="end">
-        <ion-button class="right-footer-button" [routerLink]="'/hourlyupdates'">Hourly Forecast</ion-button>
-      </ion-buttons>
-    </ion-toolbar>
   </div>
 </ion-content>

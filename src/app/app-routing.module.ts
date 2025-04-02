@@ -10,17 +10,10 @@ const routes: Routes = [
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
-  },  {
+  },
+  {
     path: 'settings',
     loadChildren: () => import('./settings/settings.module').then( m => m.SettingsPageModule)
-  },
-  {
-    path: 'dailyforecasts',
-    loadChildren: () => import('./dailyforecasts/dailyforecasts.module').then( m => m.DailyforecastsPageModule)
-  },
-  {
-    path: 'hourlyupdates',
-    loadChildren: () => import('./hourlyupdates/hourlyupdates.module').then( m => m.HourlyupdatesPageModule)
   },
 
 ];

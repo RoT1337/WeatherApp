@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PreferencesService } from './preferences/preferences.service';
+import { register } from 'swiper/element/bundle';
+
+register();
 
 @Component({
   selector: 'app-root',

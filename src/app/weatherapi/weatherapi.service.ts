@@ -3,13 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { GeolocationService } from '../geolocation/geolocation.service';
 
 const API_KEY: string = 'gGHWaROxc1GObxSwZAbApoyXKAy5GK4d';
+// const API_KEY: string = 'zmVIjEE1TejKd4eWPQfL3tnMS2Lemjbw'; // Backup
 
 @Injectable({
   providedIn: 'root'
 })
 export class WeatherapiService {
+  private locationKey: any;
   private weatherData: any = {};
   private hourlyWeatherData: any[] = [];
+  private locationsArray: any[] = [];
 
   constructor(
     private http: HttpClient,
@@ -31,19 +34,32 @@ export class WeatherapiService {
       (data: any) => {
         this.weatherData.englishName = data.EnglishName;
         this.weatherData.adminName = data.AdministrativeArea.EnglishName;
-        this.weatherData.keyForLocation = data.Key;
+        this.locationKey = data.Key;
 
         console.log(`Key for ${this.weatherData.englishName}, ${this.weatherData.adminName} : ${this.weatherData.keyForLocation}`);
 
-        this.getWeatherConditions();
-        this.getForecast5Days();
-        this.getHourlyUpdates();
+        this.getWeatherConditions(this.locationKey);
+        this.getForecast5Days(this.locationKey);
+        this.getHourlyUpdates(this.locationKey);
       }
     );
   }
 
-  private getWeatherConditions() {
-    this.http.get(`http://dataservice.accuweather.com/currentconditions/v1/${this.weatherData.keyForLocation}?apikey=${API_KEY}&details=true`).subscribe(
+  getLocationDetails(locKey: string) {
+    this.http.get(`http://dataservice.accuweather.com/locations/v1/${locKey}?apikey=${API_KEY}`).subscribe(
+      (data: any) => {
+        this.weatherData.englishName = data.EnglishName;
+        this.weatherData.adminName = data.AdministrativeArea.EnglishName;
+
+        this.getWeatherConditions(locKey);
+        this.getForecast5Days(locKey);
+        this.getHourlyUpdates(locKey);
+      }
+    );
+  }
+
+  private getWeatherConditions(locKey: string) {
+    this.http.get(`http://dataservice.accuweather.com/currentconditions/v1/${locKey}?apikey=${API_KEY}&details=true`).subscribe(
       (data: any) => {
         this.weatherData.weatherType = data[0].WeatherText.toLowerCase();
         this.weatherData.temperatureMetric = data[0].Temperature.Metric.Value;
@@ -70,11 +86,11 @@ export class WeatherapiService {
     );
   }
 
-  private getForecast5Days() {
-    this.http.get(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${this.weatherData.keyForLocation}?apikey=${API_KEY}&metric=true`).subscribe(
+  private getForecast5Days(locKey: string) {
+    this.http.get(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${locKey}?apikey=${API_KEY}&metric=true`).subscribe(
       (data: any) => {
         this.weatherData.forecastHeadline = data.Headline.Text;
-        this.weatherData.forecastStart = data.Headline.EffectiveDate;
+        this.weatherData.forecastStart = data.Headline.EffectiveEpochDate;
         this.weatherData.forecastEnd = data.Headline.EndDate;
         this.weatherData.dailyForecasts = data.DailyForecasts;
         console.log(this.weatherData.dailyForecasts);
@@ -82,13 +98,28 @@ export class WeatherapiService {
     );
   }
 
-  private getHourlyUpdates() {
-    this.http.get(`http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/${this.weatherData.keyForLocation}?apikey=${API_KEY}&metric=true`).subscribe(
+  private getHourlyUpdates(locKey: string) {
+    this.http.get(`http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/${locKey}?apikey=${API_KEY}&metric=true`).subscribe(
       (data: any) => {
         this.hourlyWeatherData = data;
         console.log(this.weatherData.hourForecast);
       }
     );
+  }
+
+  getAutoCompleteLocations(q: string) {
+    console.log(`Received: ${q}`)
+    this.http.get(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${API_KEY}&q=${q}`).subscribe(
+      (data: any) => {
+        this.locationsArray = data;
+        console.log(this.locationsArray);
+      },
+      (error) => {
+        console.error('Error fetching autocomplete locations');
+      }
+    );
+
+    return this.locationsArray;
   }
 
   getWeatherData() {

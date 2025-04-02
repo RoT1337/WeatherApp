@@ -5,6 +5,8 @@
   --ion-item-border-color: var(--ion-background-color-step-200);
   --area-button-color-light: #000;
   --area-button-color-dark: #fff;
+  --button-background-light: #ffffff; /* Light mode button background */
+  --button-color-light: #000000;
 }
 
 /* This sets a different background and item background for the default theme on md */
@@ -12,6 +14,8 @@
   --ion-background-color: var(--ion-background-color-step-100, #f9f9f9);
   --ion-toolbar-background: var(--ion-background-color);
   --ion-item-background: #fff;
+  --button-background-light: #ffffff; /* Light mode button background */
+  --button-color-light: #000000;
 }
 
 /* This sets a different item background when dark mode is enabled on ios and md */
@@ -20,4 +24,6 @@
   --ion-item-background: #1c1c1d;
   --area-button-color-light: #000;
   --area-button-color-dark: #fff;
+  --button-background-dark: #1c1c1d; /* Dark mode button background */
+  --button-color-dark: #ffffff;
 }
