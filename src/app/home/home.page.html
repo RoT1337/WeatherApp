@@ -18,7 +18,9 @@
         <ion-grid>
           <ion-row>
             <ion-col>
-              <ion-card-title>Enter a Location</ion-card-title>
+              <ion-card-title>
+                Enter a Location
+              </ion-card-title>
             </ion-col>
             <ion-col></ion-col>
             <ion-col>
@@ -49,9 +51,12 @@
   </div>
   
   <div class="body" *ngIf="weatherData.weatherType">
-    <ion-card>
+    <ion-card class="current-conditions-card">
       <ion-card-title>
-        <h1 class="ion-text-center">It's {{ weatherData.weatherType }} while feeling {{ weatherData.realfeelPhraseMetric }}</h1>
+        <h1 class="ion-text-center">
+          <img [src]="'assets/daytime/' + (weatherData.weatherIcon || '1') + '.png'" alt="Weather Icon" class="weather-icon" />
+          It's {{ weatherData.weatherType }} while feeling {{ weatherData.realfeelPhraseMetric }}
+        </h1>
       </ion-card-title>
       <ion-card-content>
         <ion-grid>
@@ -84,14 +89,13 @@
     <ion-card class="hourly-updates">
       <ion-card-title><h1 class="ion-text-center">12 Hours Updates</h1></ion-card-title>
       <ion-card-content>
-        <swiper-container>
+        <swiper-container pagination="true" space-between="10" slides-per-view="3">
           <swiper-slide *ngFor="let hour of hourlyWeatherData">
             <ion-grid>
-              <ion-row>
-                <ion-col><ion-icon name="arrow-back-outline"></ion-icon></ion-col>
+              <ion-row style="margin-bottom: 30px;">
                 <ion-col><h4>{{ convertEpochToHour(hour.EpochDateTime) }}</h4></ion-col>
+                <ion-col><img [src]="'assets/daytime/' + (hour.WeatherIcon || '1') + '.png'" alt="Weather Icon" class="weather-icon" /></ion-col>
                 <ion-col><p>Temperature: {{ hour.Temperature.Value }} °C</p></ion-col>
-                <ion-col class="ion-text-end"><ion-icon name="arrow-forward-outline"></ion-icon></ion-col>
               </ion-row>
             </ion-grid>
           </swiper-slide>
@@ -102,24 +106,21 @@
     <ion-card class="daily-forecast">
       <ion-card-header>
         <ion-card-title class="ion-text-center">{{ weatherData.forecastHeadline }}</ion-card-title>
-        <ion-card-subtitle>
-          <p>Forecast Headline Start: <time [attr.dateTime]="weatherData.forecastStart">{{ convertEpochToOnlyDate(weatherData.forecastStart) }}</time></p> 
-          <p>Forecast Headline End: <time [attr.dateTime]="weatherData.forecastEnd">{{ convertEpochToOnlyDate(weatherData.forecastStart) }}</time></p> 
-        </ion-card-subtitle>
       </ion-card-header>
       <ion-card-content>  
         <ion-list>
           <ion-item *ngFor="let day of weatherData.dailyForecasts">
-            <ion-label>
-              <h3>{{ convertEpochToOnlyDate(day.EpochDate) }}</h3>
-              <p>Temperature: {{ day.Temperature.Maximum.Value }} °C</p>
+            <ion-label *ngIf="tempChoice === 'Celcius'">
+              <h3>{{ convertEpochToDay(day.EpochDate) }}</h3>
+              <p>{{ day.Temperature.Maximum.Value }} °C <img [src]="'assets/daytime/' + (day.Day.Icon || '1') + '.png'" alt="Weather Icon" class="weather-icon" /> <img [src]="'assets/daytime/' + (day.Night.Icon || '1') + '.png'" alt="Weather Icon" class="weather-icon" /></p>
             </ion-label>
+            <ion-label *ngIf="tempChoice === 'Fahrenheit'">
+              <h3>{{ convertEpochToDay(day.EpochDate) }}</h3>
+              <p>Temperature: {{ day.Temperature.Maximum.Value }} °F <img [src]="'assets/daytime/' + (day.Day.Icon || '1') + '.png'" alt="Weather Icon" class="weather-icon" /></p>
+            </ion-label> 
           </ion-item>
         </ion-list>
       </ion-card-content>
     </ion-card>
-  </div>
-
-  <div class="footer">
   </div>
 </ion-content>

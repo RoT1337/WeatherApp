@@ -30,7 +30,7 @@ ion-content {
   --padding-top: 56px;
 
   .first-toolbar {
-    --background: transparent;
+    background: transparent;
     position: fixed;
 
     ion-col {
@@ -51,13 +51,13 @@ ion-content {
   border-radius: 0 0 15px 15px;
 }
 
-.ion-palette-dark ion-header ion-toolbar ion-button {
+.ion-palette-dark ion-header ion-toolbar ion-button{
   --color: var(--button-color-dark);
 }
 
 .custom-button {
-  --background: transparent !important;/* Default to light mode background */
-  --color: rgb(89, 89, 89) !important;
+  --background: transparent !important;
+  --color: rgb(64, 128, 255) !important;
 }
 
 .background-image {
@@ -65,47 +65,14 @@ ion-content {
   // filter: blur(10px);
 }
 
-.footer {
-  position: fixed; /* Use fixed positioning to stick to the screen */
-  bottom: 0;
-  left: 0;
-  width: 100%; /* Ensure the footer spans the full width of the screen */
-  z-index: 10;
-
-  ion-toolbar {
-    --background: transparent;
-    display: flex; /* Use flexbox for layout */
-    justify-content: space-between; /* Push buttons to the left and right edges */
-    align-items: center; /* Vertically center the buttons */
-    padding: 0; /* Remove any extra padding */
-
-    ion-buttons {
-      flex: 1; /* Ensure buttons take up equal space */
-    }
-
-    ion-button {
-      --background: #90CAF9;
-      width: 100%; /* Make the buttons fill their respective containers */
-      padding: 10px 0; /* Add padding for better appearance */
-
-      font-size: medium;
-
-      &.left-footer-button {
-        --border-radius: 0px 10px 0px 10px; /* Top-right corner rounded */
-      }
-
-      &.right-footer-button {
-        --border-radius: 10px 0px 10px 0px; /* Top-left corner rounded */
-      }
-    }
-  }
+.current-conditions-card .hourly-updates .daily-forecast {
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .search-backdrop {
   --background: rgba(0, 0, 0, 0.5); 
   backdrop-filter: blur(8px);
   z-index: 100; 
-  transition: backdrop-filter 0.3s ease, opacity 0.3s ease;
 }
 
 .search-overlay {

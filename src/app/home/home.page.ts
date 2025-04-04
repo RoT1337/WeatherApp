@@ -72,4 +72,10 @@ export class HomePage implements OnInit {
     const date = new Date(epoch * 1000);
     return date.toLocaleDateString();
   }
+
+  convertEpochToDay(epoch: number): string {
+    const date = new Date(epoch * 1000); 
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    return days[date.getDay()]; 
+  }
 }

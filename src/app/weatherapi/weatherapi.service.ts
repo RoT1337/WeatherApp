@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GeolocationService } from '../geolocation/geolocation.service';
-
-const API_KEY: string = 'gGHWaROxc1GObxSwZAbApoyXKAy5GK4d';
-// const API_KEY: string = 'zmVIjEE1TejKd4eWPQfL3tnMS2Lemjbw'; // Backup
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -30,13 +28,13 @@ export class WeatherapiService {
 
     console.log(`Latitude: ${latitude} & Longitude: ${longitude}`);
 
-    this.http.get(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${API_KEY}&q=${latitude}%2C${longitude}`).subscribe(
+    this.http.get(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${environment.apiKey}&q=${latitude}%2C${longitude}`).subscribe(
       (data: any) => {
         this.weatherData.englishName = data.EnglishName;
         this.weatherData.adminName = data.AdministrativeArea.EnglishName;
         this.locationKey = data.Key;
 
-        console.log(`Key for ${this.weatherData.englishName}, ${this.weatherData.adminName} : ${this.weatherData.keyForLocation}`);
+        console.log(`Key for ${this.weatherData.englishName}, ${this.weatherData.adminName} : ${this.locationKey}`);
 
         this.getWeatherConditions(this.locationKey);
         this.getForecast5Days(this.locationKey);
@@ -46,7 +44,7 @@ export class WeatherapiService {
   }
 
   getLocationDetails(locKey: string) {
-    this.http.get(`http://dataservice.accuweather.com/locations/v1/${locKey}?apikey=${API_KEY}`).subscribe(
+    this.http.get(`http://dataservice.accuweather.com/locations/v1/${locKey}?apikey=${environment.apiKey}`).subscribe(
       (data: any) => {
         this.weatherData.englishName = data.EnglishName;
         this.weatherData.adminName = data.AdministrativeArea.EnglishName;
@@ -59,8 +57,9 @@ export class WeatherapiService {
   }
 
   private getWeatherConditions(locKey: string) {
-    this.http.get(`http://dataservice.accuweather.com/currentconditions/v1/${locKey}?apikey=${API_KEY}&details=true`).subscribe(
+    this.http.get(`http://dataservice.accuweather.com/currentconditions/v1/${locKey}?apikey=${environment.apiKey}&details=true`).subscribe(
       (data: any) => {
+        this.weatherData.weatherIcon = data[0].WeatherIcon;
         this.weatherData.weatherType = data[0].WeatherText.toLowerCase();
         this.weatherData.temperatureMetric = data[0].Temperature.Metric.Value;
         this.weatherData.temperatureImperial = data[0].Temperature.Imperial.Value;
@@ -87,7 +86,7 @@ export class WeatherapiService {
   }
 
   private getForecast5Days(locKey: string) {
-    this.http.get(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${locKey}?apikey=${API_KEY}&metric=true`).subscribe(
+    this.http.get(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${locKey}?apikey=${environment.apiKey}&metric=true`).subscribe(
       (data: any) => {
         this.weatherData.forecastHeadline = data.Headline.Text;
         this.weatherData.forecastStart = data.Headline.EffectiveEpochDate;
@@ -99,7 +98,7 @@ export class WeatherapiService {
   }
 
   private getHourlyUpdates(locKey: string) {
-    this.http.get(`http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/${locKey}?apikey=${API_KEY}&metric=true`).subscribe(
+    this.http.get(`http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/${locKey}?apikey=${environment.apiKey}&metric=true`).subscribe(
       (data: any) => {
         this.hourlyWeatherData = data;
         console.log(this.weatherData.hourForecast);
@@ -109,7 +108,7 @@ export class WeatherapiService {
 
   getAutoCompleteLocations(q: string) {
     console.log(`Received: ${q}`)
-    this.http.get(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${API_KEY}&q=${q}`).subscribe(
+    this.http.get(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${environment.apiKey}&q=${q}`).subscribe(
       (data: any) => {
         this.locationsArray = data;
         console.log(this.locationsArray);
