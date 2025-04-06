@@ -28,7 +28,7 @@ export class WeatherapiService {
 
     console.log(`Latitude: ${latitude} & Longitude: ${longitude}`);
 
-    this.http.get(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${environment.apiKey}&q=${latitude}%2C${longitude}`).subscribe(
+    this.http.get(`${environment.apiUrl}/locations/v1/cities/geoposition/search?apikey=${environment.apiKey}&q=${latitude}%2C${longitude}`).subscribe(
       (data: any) => {
         this.weatherData.englishName = data.EnglishName;
         this.weatherData.adminName = data.AdministrativeArea.EnglishName;
@@ -39,12 +39,15 @@ export class WeatherapiService {
         this.getWeatherConditions(this.locationKey);
         this.getForecast5Days(this.locationKey);
         this.getHourlyUpdates(this.locationKey);
+      },
+      (error) => {
+        alert(`HTTP Error: ${JSON.stringify(error)}`);
       }
     );
   }
 
   getLocationDetails(locKey: string) {
-    this.http.get(`http://dataservice.accuweather.com/locations/v1/${locKey}?apikey=${environment.apiKey}`).subscribe(
+    this.http.get(`${environment.apiUrl}/locations/v1/${locKey}?apikey=${environment.apiKey}`).subscribe(
       (data: any) => {
         this.weatherData.englishName = data.EnglishName;
         this.weatherData.adminName = data.AdministrativeArea.EnglishName;
@@ -57,7 +60,7 @@ export class WeatherapiService {
   }
 
   private getWeatherConditions(locKey: string) {
-    this.http.get(`http://dataservice.accuweather.com/currentconditions/v1/${locKey}?apikey=${environment.apiKey}&details=true`).subscribe(
+    this.http.get(`${environment.apiUrl}/currentconditions/v1/${locKey}?apikey=${environment.apiKey}&details=true`).subscribe(
       (data: any) => {
         this.weatherData.weatherIcon = data[0].WeatherIcon;
         this.weatherData.weatherType = data[0].WeatherText.toLowerCase();
@@ -86,7 +89,7 @@ export class WeatherapiService {
   }
 
   private getForecast5Days(locKey: string) {
-    this.http.get(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${locKey}?apikey=${environment.apiKey}&metric=true`).subscribe(
+    this.http.get(`${environment.apiUrl}/forecasts/v1/daily/5day/${locKey}?apikey=${environment.apiKey}&metric=true`).subscribe(
       (data: any) => {
         this.weatherData.forecastHeadline = data.Headline.Text;
         this.weatherData.forecastStart = data.Headline.EffectiveEpochDate;
@@ -98,7 +101,7 @@ export class WeatherapiService {
   }
 
   private getHourlyUpdates(locKey: string) {
-    this.http.get(`http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/${locKey}?apikey=${environment.apiKey}&metric=true`).subscribe(
+    this.http.get(`${environment.apiUrl}/forecasts/v1/hourly/12hour/${locKey}?apikey=${environment.apiKey}&metric=true`).subscribe(
       (data: any) => {
         this.hourlyWeatherData = data;
         console.log(this.weatherData.hourForecast);
@@ -108,7 +111,7 @@ export class WeatherapiService {
 
   getAutoCompleteLocations(q: string) {
     console.log(`Received: ${q}`)
-    this.http.get(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${environment.apiKey}&q=${q}`).subscribe(
+    this.http.get(`${environment.apiUrl}/locations/v1/cities/autocomplete?apikey=${environment.apiKey}&q=${q}`).subscribe(
       (data: any) => {
         this.locationsArray = data;
         console.log(this.locationsArray);
