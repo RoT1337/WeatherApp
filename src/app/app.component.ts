@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PreferencesService } from './preferences/preferences.service';
+import { SQLiteService } from './sqlite-service/sqlite.service';
 import { register } from 'swiper/element/bundle';
 
 register();
@@ -11,17 +12,21 @@ register();
   standalone: false,
 })
 export class AppComponent implements OnInit {
-  constructor(private preferencesService: PreferencesService) {}
+  constructor(
+    private preferencesService: PreferencesService,
+    private sqliteService: SQLiteService,
+  ) {}
 
   async ngOnInit() {
-    await this.initializeAppPreferences();
+    await this.initializeApp();
   }
 
-  async initializeAppPreferences() {
+  async initializeApp() {
     const settings = await this.preferencesService.getPreferences('settings');
     if (settings) {
       this.applyPreferences(settings);
     }
+    await this.sqliteService.initializeDatabase();
   }
 
   applyPreferences(settings: any) {

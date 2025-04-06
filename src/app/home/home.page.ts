@@ -21,7 +21,7 @@ export class HomePage implements OnInit {
 
   async ngOnInit() {
     await this.getTempPreference();
-    this.weatherapiService.getCurrentLocation();
+    //this.weatherapiService.getCurrentLocation();
   }
 
   async getTempPreference() {
@@ -50,10 +50,10 @@ export class HomePage implements OnInit {
     this.isSearchOverlayVisible = !this.isSearchOverlayVisible;
   }
 
-  onSearchChange(event: any) {
+  async onSearchChange(event: any) {
     const query = event.target.value;
     console.log(query);
-    this.locationsArray = this.weatherapiService.getAutoCompleteLocations(query);
+    this.locationsArray = await this.weatherapiService.getAutoCompleteLocations(query);
   }
 
   selectLocation(locationKey: string) {

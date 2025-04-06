@@ -8,7 +8,7 @@ import { PreferencesService } from '../preferences/preferences.service';
   standalone: false,
 })
 export class SettingsPage implements OnInit {
-  tempChoice: string = '';
+  tempChoice: string = 'Celcius';
   paletteToggle: boolean = false;
 
   constructor(private preferenceService: PreferencesService) {}
