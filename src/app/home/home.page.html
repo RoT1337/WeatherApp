@@ -1,9 +1,11 @@
 <ion-header>
   <ion-toolbar class="first-toolbar fixed-toolbar">
-    <ion-button fill="clear" (click)="toggleSearchOverlay()" class="ion-text-center custom-button">
-      <ion-icon name="pin-outline"></ion-icon>
-      {{ weatherData.englishName }}, {{ weatherData.adminName }}
-    </ion-button>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="toggleSearchOverlay()" class="ion-text-center custom-button">
+        <ion-icon name="pin-outline"></ion-icon>
+        {{ weatherData.englishName }}, {{ weatherData.adminName }}
+      </ion-button>
+    </ion-buttons>
     <ion-buttons slot="end">
       <ion-button [routerLink]="'/settings'" class="custom-button">
         <ion-icon name="settings-outline"></ion-icon>
@@ -96,7 +98,9 @@
             <ion-grid>
               <ion-row style="margin-bottom: 30px;">
                 <ion-col><h4>{{ convertEpochToHour(hour.EpochDateTime) }}</h4></ion-col>
-                <ion-col><img [src]="'assets/daytime/' + (hour.WeatherIcon || '1') + '.png'" alt="Weather Icon" class="weather-icon" /></ion-col>
+                <ion-col><img [src]="'assets/daytime/' + (hour.WeatherIcon || '1') + '.png'" 
+                  alt="Weather Icon" 
+                  class="weather-icon" /></ion-col>
                 <ion-col><p>{{ hour.Temperature.Value }} °C</p></ion-col>
               </ion-row>
             </ion-grid>

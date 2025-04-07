@@ -21,7 +21,7 @@ export class HomePage implements OnInit {
 
   async ngOnInit() {
     await this.getTempPreference();
-    //this.weatherapiService.getCurrentLocation();
+    this.weatherapiService.getCurrentLocation();
   }
 
   async getTempPreference() {

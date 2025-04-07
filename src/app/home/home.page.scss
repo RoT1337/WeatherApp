@@ -27,20 +27,20 @@
 }
 
 ion-header {
-  padding-top: var(--ion-safe-area-top);
-}
-
-ion-content {
-  --padding-top: 56px;
-
   .first-toolbar {
     background: transparent;
     position: fixed;
+
+    padding-top: 5%;
 
     ion-col {
       --font-size: 5px;
     }
   }
+}
+
+ion-content {
+  --padding-top: 10%;
 }
 
 .fixed-toolbar {
