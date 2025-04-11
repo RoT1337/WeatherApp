@@ -1,6 +1,6 @@
-# WeatherApp
+# A Weather Application
 
-WeatherApp is a mobile application that provides weather updates using the AccuWeather API. It offers features such as current weather conditions, 12-hour updates, 5-day forecasts, and the ability to search for weather details by location. The app also supports offline caching of weather data using `@capacitor-community/sqlite`.
+This mobile application project provides weather updates using the AccuWeather API. It offers features such as current weather conditions, 12-hour updates, 5-day forecasts, and the ability to search for weather details by location. The app also supports offline caching of weather data using `@capacitor-community/sqlite`.
 
 ---
 
@@ -37,3 +37,36 @@ WeatherApp is a mobile application that provides weather updates using the AccuW
 5. Run the app:
     ionic serve (for web only)
     npm cap open android (with Android Studio)
+
+---
+
+## Usage
+
+Enable GPS Permissions:
+Ensure GPS permissions are enabled for the app to automatically fetch your location's weather details.
+
+Search for a Location:
+Tap the icon on the top left to manually search for a location.
+
+View Weather Details:
+Access current conditions, 12-hour updates, and 5-day forecasts.
+
+Customize Preferences:
+Navigate to the settings page to toggle between Celsius and Fahrenheit or enable dark mode.
+
+--
+
+## Offline Support
+
+WeatherApp uses @capacitor-community/sqlite to cache weather data for offline use. If the app cannot fetch data from the API, it will attempt to load the most recent cached data
+
+--
+
+## Technologies Used
+Frontend: Ionic Framework, Angular
+Backend API: AccuWeather API
+Offline Caching: @capacitor-community/sqlite
+Plugins:
+@capacitor/app
+@capacitor/preferences
+@capacitor/geolocation
