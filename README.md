@@ -1,4 +1,4 @@
-# A Weather Application
+# An Ionic Mobile Weather Application
 
 This mobile application project provides weather updates using the AccuWeather API. It offers features such as current weather conditions, 12-hour updates, 5-day forecasts, and the ability to search for weather details by location. The app also supports offline caching of weather data using `@capacitor-community/sqlite`.
 
@@ -22,7 +22,8 @@ This mobile application project provides weather updates using the AccuWeather A
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/weatherapp.git
+   
+   git clone https://github.com/RoT1337/WeatherApp.git
    cd weatherapp
 
 2. Install dependencies:
