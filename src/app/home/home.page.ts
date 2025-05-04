@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherapiService } from '../weatherapi/weatherapi.service';
 import { PreferencesService } from '../preferences/preferences.service';
+import { IonRouterOutlet, Platform } from '@ionic/angular';
+import { App } from '@capacitor/app';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +19,17 @@ export class HomePage implements OnInit {
   constructor(
     private weatherapiService: WeatherapiService,
     private preferencesService: PreferencesService,
-  ) {}
+    private platform: Platform,
+    private routerOutlet: IonRouterOutlet
+  ) {
+
+    this.platform.backButton.subscribeWithPriority(-1, () => {
+      if (!this.routerOutlet.canGoBack()) {
+        App.exitApp();
+      }
+    });
+
+  }
 
   async ngOnInit() {
     await this.getTempPreference();

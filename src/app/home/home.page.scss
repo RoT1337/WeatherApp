@@ -39,8 +39,18 @@ ion-header {
   }
 }
 
-ion-content {
-  --padding-top: 10%;
+.temp-hot {
+  color: lightcoral;
+  font-weight: bold;
+}
+
+.temp-cold {
+  color: lightblue;
+  font-weight: bold;
+}
+
+.body {
+  padding-top: 60px;
 }
 
 .fixed-toolbar {
@@ -87,4 +97,60 @@ ion-content {
   z-index: 101; 
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.hourly-weather-icon {
+  width: 50px; /* Adjust the width as needed */
+  height: 50px; /* Adjust the height as needed */
+  object-fit: contain; /* Ensure the image fits within the dimensions without distortion */
+  margin: 0 auto; /* Center the image horizontally */
+  display: block; /* Ensure the image behaves like a block element */
+}
+
+.hourly-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.time-col {
+  flex: 1;
+}
+
+.time-text {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.icon-col {
+  flex: 1;
+  display: flex;
+  justify-content: center; /* Center the image horizontally */
+  align-items: center; /* Center the image vertically */
+  max-width: 60px; /* Set a fixed width for the column */
+}
+
+.hourly-weather-icon {
+  width: 50px; /* Fixed width */
+  height: 50px; /* Fixed height */
+  object-fit: contain; /* Ensure the image fits within the dimensions without distortion */
+}
+
+.temperature-col {
+  flex: 1;
+}
+
+.temperature-unit {
+  font-size: 0.8em;
+}
+
+.rain-col {
+  flex: 1;
+}
+
+img {
+  max-width: none;
 }

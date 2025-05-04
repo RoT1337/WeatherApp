@@ -15,45 +15,6 @@
 </ion-header>
 
 <ion-content class="ion-padding background-image">
-  <ion-backdrop *ngIf="isSearchOverlayVisible" (click)="toggleSearchOverlay()" class="search-backdrop"></ion-backdrop>
-  <div *ngIf="isSearchOverlayVisible" class="search-overlay" (click)="$event.stopPropagation()">
-    <ion-card>
-      <ion-card-header>
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <ion-card-title>
-                Enter a Location
-              </ion-card-title>
-            </ion-col>
-            <ion-col></ion-col>
-            <ion-col>
-              <ion-button fill="clear" (click)="toggleSearchOverlay()" class="ion-text-end toggle-search-button">
-                <ion-icon name="exit-outline"></ion-icon>
-              </ion-button>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="onSearchChange($event)"></ion-searchbar>
-        <ion-list>
-          <ion-item>
-            <ion-button fill="clear" (click)="getCurrentLocation()">
-              <ion-icon name="navigate-circle-outline" slot="start"></ion-icon>
-              Get Your Current Location
-            </ion-button>
-          </ion-item>
-          <ion-item *ngFor="let place of locationsArray">
-            <ion-button fill="clear" (click)="selectLocation(place.Key)">
-              {{ place.LocalizedName }}, {{ place.AdministrativeArea.LocalizedName }}
-            </ion-button>
-          </ion-item>
-        </ion-list>
-      </ion-card-content>
-    </ion-card>
-  </div>
-  
   <div class="body" *ngIf="weatherData.weatherType">
     <ion-card class="current-conditions-card">
       <ion-card-title>
@@ -67,22 +28,48 @@
           <ion-row>
             <ion-col class="ion-text-start">
               <p *ngIf="tempChoice === 'Celcius'">
-                Temperature: {{ weatherData.temperatureMetric }} °C <br /><br />
-                RealFeel®: {{ weatherData.realfeelTempMetric }} °C <br />
+                Temperature: 
+                <span [ngClass]="weatherData.temperatureMetric >= 36 ? 'temp-hot' : 'temp-cold'">
+                  {{ weatherData.temperatureMetric }} °C
+                </span>
+                <br /><br />
+                RealFeel®: 
+                <span [ngClass]="weatherData.realfeelTempMetric >= 36 ? 'temp-hot' : 'temp-cold'">
+                  {{ weatherData.realfeelTempMetric }} °C
+                </span>
+                <br />
               </p>
               <p *ngIf="tempChoice === 'Fahrenheit'">
-                Temperature: {{ weatherData.temperatureImperial }} °F <br /><br />
-                RealFeel®: {{ weatherData.realfeelTempImperial }} °F <br />
+                Temperature: 
+                <span [ngClass]="weatherData.temperatureImperial >= 96.8 ? 'temp-hot' : 'temp-cold'">
+                  {{ weatherData.temperatureImperial }} °F
+                </span>
+                <br /><br />
+                RealFeel®: 
+                <span [ngClass]="weatherData.realfeelTempImperial >= 96.8 ? 'temp-hot' : 'temp-cold'">
+                  {{ weatherData.realfeelTempImperial }} °F
+                </span>
+                <br />
               </p>
             </ion-col>
             <ion-col class="ion-text-end">
               <p *ngIf="tempChoice === 'Celcius'">
-                RealFeelShade®: {{ weatherData.realFeelShadeTempMetric }} °C <br /><br />
+                RealFeelShade®: 
+                <span [ngClass]="weatherData.realFeelShadeTempMetric >= 36 ? 'temp-hot' : 'temp-cold'">
+                  {{ weatherData.realFeelShadeTempMetric }} °C
+                </span>
+                <br /><br />
               </p>
               <p *ngIf="tempChoice === 'Fahrenheit'">
-                RealFeelShade®: {{ weatherData.realFeelShadeTempImperial }} °F <br /><br />
+                RealFeelShade®: 
+                <span [ngClass]="weatherData.realFeelShadeTempImperial >= 96.8 ? 'temp-hot' : 'temp-cold'">
+                  {{ weatherData.realFeelShadeTempImperial }} °F
+                </span>
+                <br /><br />
               </p>
-              UV Index: {{ weatherData.uvIndexNum }} {{ weatherData.uvIndexText }} <br /><br />
+              <p [ngClass]="weatherData.uvIndexNum >= 6 ? 'temp-hot' : 'temp-cold'">
+                UV Index: {{ weatherData.uvIndexNum }} {{ weatherData.uvIndexText }}
+              </p><br /><br />
               Wind: {{ weatherData.windDirection }} {{ weatherData.windSpeed }} <br />
             </ion-col>
           </ion-row>
@@ -91,23 +78,37 @@
     </ion-card>
 
     <ion-card class="hourly-updates">
-      <ion-card-title><h1 class="ion-text-center">12 Hours Updates</h1></ion-card-title>
-      <ion-card-content>
-        <swiper-container pagination="true" space-between="10" slides-per-view="3">
-          <swiper-slide *ngFor="let hour of hourlyWeatherData">
-            <ion-grid>
-              <ion-row style="margin-bottom: 30px;">
-                <ion-col><h4>{{ convertEpochToHour(hour.EpochDateTime) }}</h4></ion-col>
-                <ion-col><img [src]="'assets/daytime/' + (hour.WeatherIcon || '1') + '.png'" 
-                  alt="Weather Icon" 
-                  class="weather-icon" /></ion-col>
-                <ion-col><p>{{ hour.Temperature.Value }} °C</p></ion-col>
-              </ion-row>
-            </ion-grid>
-          </swiper-slide>
-        </swiper-container>
-      </ion-card-content>
-    </ion-card>
+  <ion-card-title><h1 class="ion-text-center">12 Hours Updates</h1></ion-card-title>
+  <ion-card-content>
+    <swiper-container pagination="true" space-between="10" slides-per-view="3">
+      <swiper-slide *ngFor="let hour of hourlyWeatherData">
+        <ion-grid>
+          <ion-row class="hourly-row" style="margin-bottom: 30px;">
+            <ion-col class="time-col">
+              <h4 class="time-text">
+                <span>{{ convertEpochToHour(hour.EpochDateTime).split(' ')[0] }}</span>
+                <span>{{ convertEpochToHour(hour.EpochDateTime).split(' ')[1] }}</span>
+              </h4>
+            </ion-col>
+            <ion-col class="icon-col">
+              <img [src]="'assets/daytime/' + (hour.WeatherIcon || '1') + '.png'" 
+                alt="Weather Icon" 
+                class="weather-icon hourly-weather-icon" />
+            </ion-col>
+            <ion-col class="temperature-col">
+              <p [ngClass]="hour.Temperature.Value >= 36 ? 'temp-hot' : 'temp-cold'">
+                {{ hour.Temperature.Value }} <span class="temperature-unit">°C</span>
+              </p>
+            </ion-col>
+            <ion-col class="rain-col">
+              <p>☔ {{ hour.RainProbability }} %</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </swiper-slide>
+    </swiper-container>
+  </ion-card-content>
+</ion-card>
 
     <ion-card class="daily-forecast">
       <ion-card-header>
@@ -118,11 +119,23 @@
           <ion-item *ngFor="let day of weatherData.dailyForecasts">
             <ion-label *ngIf="tempChoice === 'Celcius'">
               <h3>{{ convertEpochToDay(day.EpochDate) }}</h3>
-              <p>{{ day.Temperature.Maximum.Value }} °C <img [src]="'assets/daytime/' + (day.Day.Icon || '1') + '.png'" alt="Weather Icon" class="weather-icon" /> <img [src]="'assets/daytime/' + (day.Night.Icon || '1') + '.png'" alt="Weather Icon" class="weather-icon" /></p>
+              <p>
+                <span [ngClass]="day.Temperature.Maximum.Value >= 36 ? 'temp-hot' : 'temp-cold'">
+                  {{ day.Temperature.Maximum.Value }} °C
+                </span>
+                <img [src]="'assets/daytime/' + (day.Day.Icon || '1') + '.png'" alt="Weather Icon" class="weather-icon" />
+                <img [src]="'assets/daytime/' + (day.Night.Icon || '1') + '.png'" alt="Weather Icon" class="weather-icon" />
+              </p>
             </ion-label>
             <ion-label *ngIf="tempChoice === 'Fahrenheit'">
               <h3>{{ convertEpochToDay(day.EpochDate) }}</h3>
-              <p>Temperature: {{ day.Temperature.Maximum.Value }} °F <img [src]="'assets/daytime/' + (day.Day.Icon || '1') + '.png'" alt="Weather Icon" class="weather-icon" /></p>
+              <p>
+                Temperature: 
+                <span [ngClass]="day.Temperature.Maximum.Value >= 96.8 ? 'temp-hot' : 'temp-cold'">
+                  {{ day.Temperature.Maximum.Value }} °F
+                </span>
+                <img [src]="'assets/daytime/' + (day.Day.Icon || '1') + '.png'" alt="Weather Icon" class="weather-icon" />
+              </p>
             </ion-label> 
           </ion-item>
         </ion-list>

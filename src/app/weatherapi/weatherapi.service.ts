@@ -32,7 +32,7 @@ export class WeatherapiService {
 
     this.http
       .get(
-        `${environment.apiUrl}/locations/v1/cities/geoposition/search?apikey=${environment.apiKey}&q=${latitude}%2C${longitude}`
+        `${environment.apiUrl}/locations/v1/cities/geoposition/search?apikey=${environment.apiKey2}&q=${latitude}%2C${longitude}`
       )
       .subscribe(
         (data: any) => {
@@ -92,7 +92,7 @@ export class WeatherapiService {
   getLocationDetails(locKey: string): void {
     this.http
       .get(
-        `${environment.apiUrl}/locations/v1/${locKey}?apikey=${environment.apiKey}`
+        `${environment.apiUrl}/locations/v1/${locKey}?apikey=${environment.apiKey2}`
       )
       .subscribe(
         (data: any) => {
@@ -126,7 +126,7 @@ export class WeatherapiService {
   private getWeatherConditions(locKey: string): void {
     this.http
       .get(
-        `${environment.apiUrl}/currentconditions/v1/${locKey}?apikey=${environment.apiKey}&details=true`
+        `${environment.apiUrl}/currentconditions/v1/${locKey}?apikey=${environment.apiKey2}&details=true`
       )
       .subscribe(
         (data: any) => {
@@ -164,7 +164,7 @@ export class WeatherapiService {
   private getForecast5Days(locKey: string): void {
     this.http
       .get(
-        `${environment.apiUrl}/forecasts/v1/daily/5day/${locKey}?apikey=${environment.apiKey}&metric=true`
+        `${environment.apiUrl}/forecasts/v1/daily/5day/${locKey}?apikey=${environment.apiKey2}&metric=true`
       )
       .subscribe(
         (data: any) => {
@@ -184,7 +184,7 @@ export class WeatherapiService {
   private getHourlyUpdates(locKey: string): void {
     this.http
       .get(
-        `${environment.apiUrl}/forecasts/v1/hourly/12hour/${locKey}?apikey=${environment.apiKey}&metric=true`
+        `${environment.apiUrl}/forecasts/v1/hourly/12hour/${locKey}?apikey=${environment.apiKey2}&details=true&metric=true`
       )
       .subscribe(
         (data: any) => {
@@ -202,7 +202,7 @@ export class WeatherapiService {
     console.log(`Received: ${q}`);
     this.http
       .get(
-        `${environment.apiUrl}/locations/v1/cities/autocomplete?apikey=${environment.apiKey}&q=${q}`
+        `${environment.apiUrl}/locations/v1/cities/autocomplete?apikey=${environment.apiKey2}&q=${q}`
       )
       .subscribe(
         (data: any) => {

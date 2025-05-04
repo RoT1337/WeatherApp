@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PreferencesService } from './preferences/preferences.service';
 import { SQLiteService } from './sqlite-service/sqlite.service';
-import { register } from 'swiper/element/bundle';
-import { App } from '@capacitor/app';
+import { register } from 'swiper/element/bundle';;
 
 register();
 
@@ -28,8 +27,6 @@ export class AppComponent implements OnInit {
       this.applyPreferences(settings);
     }
     await this.sqliteService.initializeDatabase();
-
-    this.handleBackButton();
   }
 
   applyPreferences(settings: any) {
@@ -38,13 +35,5 @@ export class AppComponent implements OnInit {
     } else {
       document.documentElement.classList.remove('ion-palette-dark');
     }
-  }
-
-  handleBackButton() {
-    App.addListener('backButton', ({ canGoBack }) => {
-      if (!canGoBack) {
-        App.minimizeApp();
-      }
-    });
   }
 }
